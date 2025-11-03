@@ -1,5 +1,7 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, ScrollView } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import AddRecipes from '../components/AddRecipes'
+import { getRecipes } from '../services/Recipes.service'
 
 const dados_fake = [
     {
@@ -23,21 +25,70 @@ const dados_fake = [
 export default function Recipes() {
 
     const [view, setView] = useState('list')
+    const [recipes, setRecipes] = useState([])
 
+    const loadRecipes = async () => {
+      const data = await getRecipes()
+      setRecipes(data)
+    }
 
+    useEffect(() => {
 
+      loadRecipes()
+      
+    }, [])
 
-  return (
-    <View>
-      <Text style={styles.title}>
-        Bem vindo!
-      </Text>
+    const renderItem = ({item}) => {
+
+      console.log(item)
+
+      return (
+        <View style={styles.card}>
+          <Text style={styles.textButton}>
+            Título
+          </Text>
+
+          <Text style={styles.cardItem}>
+            {item.nome}
+          </Text>
+
+          
+          <Text style={styles.textButton}>
+            Ingredientes
+          </Text>
+          <Text style={styles.cardItem}>
+            {item.ingredientes}
+          </Text>
+
+          
+          <Text style={styles.textButton}>
+            Modo Preparo
+          </Text>
+          <Text style={styles.cardItem}>
+            {item.modo_preparo}
+          </Text>
+
+          <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
+        <Text style={styles.textButton}>
+            Editar
+        </Text>
+      </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
         <Text style={styles.textButton}>
-            opa
+            Deletar
         </Text>
       </TouchableOpacity>
+        </View>
+      )
+    }
+
+
+  return (
+    <ScrollView>
+      <Text style={styles.title}>
+        Bem vindo!
+      </Text>
 
       {(view === 'list') ? (
         <View>
@@ -46,6 +97,8 @@ export default function Recipes() {
             Adicionar receita
         </Text>
         </TouchableOpacity>
+
+        <FlatList data={recipes} keyExtractor={(item) => {item.id.toString()}} renderItem={(item) => renderItem(item)}></FlatList>
         </View>
       ): (
         <View>
@@ -54,9 +107,11 @@ export default function Recipes() {
             Ver receitas
         </Text>
         </TouchableOpacity>
+
+        <AddRecipes></AddRecipes>
         </View>
       )}
-    </View>
+    </ScrollView>
   )
 }
 
@@ -83,5 +138,15 @@ const styles = StyleSheet.create({
     textButton: {
         color: '#fff',
         fontWeight: 'bold'
+    },
+    card: {
+      backgroundColor: '#1a2b4a',
+      padding: 30,
+      borderRadius: 10,
+      marginBottom: 20
+    },
+    cardItem: {
+      color: '#fff',
+      marginBottom: 10
     }
 })
