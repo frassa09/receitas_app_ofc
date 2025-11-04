@@ -1,19 +1,43 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
-import { TextInput } from "react-native-web";
+import { TextInput, Picker } from "react-native-web";
+import { getUsers } from "../services/Users.service";
+import { getCategories } from "../services/Category.service";
 
 
 export default function AddRecipes() {
     const [nome, setNome] = useState('')
     const [ingredientes, setIngredientes] = useState('')
     const [modoPreparo, setModoPreparo] = useState('')
+    const [porcoes, setPorcoes] = useState('')
+    const [tempoPreparoMinutos, setTempoPreparoMinutos] = useState('')
+    const [categorias, setCategorias] = useState('')
+    const [users, setUsers] = useState('')
+    const [userId, setUserId] = useState('')
+
+    useEffect(() => {
+        loadUsers()
+        loadCategories()
+        console.log('funcoes executadas')
+    }, [])
+
+    const loadUsers = async () => {
+        const data = await getUsers()
+        setUsers(data)
+        console.log('AQUI OOOOOOO' + users)
+    }
+    const loadCategories = async () => {
+        const data = await getCategories()
+        setCategorias(data)
+    }
+
 
     function save() {
         const obj = {
             nome, ingredientes, modoPreparo
         }
         console.log(JSON.stringify(obj));
-        
+        //provisorio
     }
 
     return (
@@ -37,6 +61,26 @@ export default function AddRecipes() {
                 onChangeText={setModoPreparo}
                 placeholder="Digite o modo de preparo.."
             />
+            <TextInput
+                value={porcoes}
+                onChangeText={setPorcoes}
+                placeholder="Digite a quantidade de porções.."
+            />
+            <TextInput
+                value={tempoPreparoMinutos}
+                onChangeText={setTempoPreparoMinutos}
+                placeholder="Digite o tempo de preparo em minutos.."
+            />
+
+            <Picker selectedValue={userId} onValueChange={(item) => setUserId(item)}>
+
+                {users.map((user) => (
+                    <Picker.Item key={user.id} label={user.nome} value={user.id.toString()}>
+
+                    </Picker.Item>
+                ))}
+                
+            </Picker>
 
             <TouchableOpacity 
                 style={style.button}
