@@ -13,6 +13,12 @@ export default function Home({navigation}) {
             Ver receitas
         </Text>
       </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Categories')}>
+        <Text style={styles.textButton}>
+          Categorias
+        </Text>
+      </TouchableOpacity>
     </View>
   )
 }

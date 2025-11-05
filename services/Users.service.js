@@ -1,4 +1,4 @@
-const url = 'http://10.3.118.112:3000'
+const url = 'http://10.3.116.184:3000'
 
 export async function getUsers() {
     

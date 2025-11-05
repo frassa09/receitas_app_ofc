@@ -1,4 +1,4 @@
-const url = 'http://10.3.118.112:3000'
+const url = 'http://10.3.116.184:3000'
 
 export async function getRecipes() {
     
@@ -11,7 +11,7 @@ export async function getRecipes() {
         }) 
 
         const resposta = await response.json()
-        return data.data
+        return resposta.data
     }
     catch(e){
 
@@ -31,8 +31,24 @@ export async function createRecipe(recipe){
         })
 
         const data = await response.json()
+        return data
     }
     catch(e){
 
+    }
+}
+
+export async function deleteRecipe(id) {
+    const request = `${url}/receitas`
+
+    try{
+        const response = await fetch(`${request}${id}`, {
+            method: 'DELETE'
+        })
+        const data = await response.json()
+        return data
+    }
+    catch(e){
+        
     }
 }

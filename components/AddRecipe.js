@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
 import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
 import { TextInput, Picker } from "react-native-web";
 import { getUsers } from "../services/Users.service";
 import { getCategories } from "../services/Category.service";
+import { createRecipe } from "../services/Recipes.service";
 
 
 export default function AddRecipes() {
@@ -11,32 +12,58 @@ export default function AddRecipes() {
     const [modoPreparo, setModoPreparo] = useState('')
     const [porcoes, setPorcoes] = useState('')
     const [tempoPreparoMinutos, setTempoPreparoMinutos] = useState('')
-    const [categorias, setCategorias] = useState('')
-    const [users, setUsers] = useState('')
+    const [categorias, setCategorias] = useState([])
+    const [users, setUsers] = useState([])
     const [userId, setUserId] = useState('')
+    const [categoryId, setCategoryId] = useState('')
 
-    useEffect(() => {
-        loadUsers()
-        loadCategories()
-        console.log('funcoes executadas')
-    }, [])
+    
 
     const loadUsers = async () => {
         const data = await getUsers()
         setUsers(data)
-        console.log('AQUI OOOOOOO' + users)
     }
     const loadCategories = async () => {
         const data = await getCategories()
         setCategorias(data)
     }
+    
+    useEffect(() => {
+        loadUsers()
+        loadCategories()
+    }, [])
+
+    const clearForm = () => {
+        setNome('')
+        setIngredientes('')
+        setModoPreparo('')
+        setPorcoes('')
+        setTempoPreparoMinutos('')
+        setUserId('')
+        setCategoryId('')
+    }
 
 
-    function save() {
+    async function save() {
         const obj = {
-            nome, ingredientes, modoPreparo
+            nome: nome, 
+            ingredientes: ingredientes, 
+            modo_preparo: modoPreparo,
+            porcoes: parseInt(porcoes),
+            tempo_preparo_minutos: parseInt(tempoPreparoMinutos),
+            usuario_id: parseInt(userId),
+            categoria: parseInt(categoryId)
         }
         console.log(JSON.stringify(obj));
+
+        try{
+            clearForm()
+            const response = await createRecipe(obj)
+            console.log(response)
+        }
+        catch(e){
+
+        }
         //provisorio
     }
 
@@ -48,32 +75,34 @@ export default function AddRecipes() {
 
             <TextInput
                 value={nome}
-                onChangeText={setNome}
+                onChangeText={(text) => setNome(text)}
                 placeholder="Digite o nome.."
             />
             <TextInput
                 value={ingredientes}
-                onChangeText={setIngredientes}
+                onChangeText={(text) => setIngredientes(text)}
                 placeholder="Digite os ingrediêntes.."
             />
             <TextInput
                 value={modoPreparo}
-                onChangeText={setModoPreparo}
+                onChangeText={(text) => setModoPreparo(text)}
                 placeholder="Digite o modo de preparo.."
             />
             <TextInput
                 value={porcoes}
-                onChangeText={setPorcoes}
+                onChangeText={(text) => setPorcoes(text)}
                 placeholder="Digite a quantidade de porções.."
             />
             <TextInput
                 value={tempoPreparoMinutos}
-                onChangeText={setTempoPreparoMinutos}
+                onChangeText={(text) => setTempoPreparoMinutos(text)}
                 placeholder="Digite o tempo de preparo em minutos.."
             />
 
             <Picker selectedValue={userId} onValueChange={(item) => setUserId(item)}>
 
+                <Picker.Item label={'Selecione uma opção'} value={''} enabled={false}></Picker.Item>
+                
                 {users.map((user) => (
                     <Picker.Item key={user.id} label={user.nome} value={user.id.toString()}>
 
@@ -82,9 +111,19 @@ export default function AddRecipes() {
                 
             </Picker>
 
+            <Picker selectedValue={categoryId} onValueChange={(item) => setCategoryId(item)}>
+
+                <Picker.Item label={'Selecione uma categoria'} value={''} enabled={false}></Picker.Item>
+
+                {categorias.map((category) => (
+                    <Picker.Item key={category.id} label={category.nome} value={category.id.toString()}></Picker.Item>
+                ))}
+
+            </Picker>
+
             <TouchableOpacity 
                 style={style.button}
-                onPress={() => save()}>
+                onPress={save}>
 
                 <Text style={style.textButton}>
                     Salvar
