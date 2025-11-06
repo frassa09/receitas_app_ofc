@@ -7,6 +7,7 @@ export default function Recipes({ navigation }) {
 
     const [view, setView] = useState('list')
     const [recipes, setRecipes] = useState([])
+    const [clickDelete, setClickDelete] = useState(false)
 
     const loadRecipes = async () => {
       const data = await getRecipes()
@@ -17,7 +18,7 @@ export default function Recipes({ navigation }) {
 
       loadRecipes()
       
-    }, [])
+    }, [clickDelete])
 
     const renderItem = ({item}) => {
 
@@ -54,9 +55,12 @@ export default function Recipes({ navigation }) {
         </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('DeleteRecipe', {
-        userId: item.id
-      })}>
+      <TouchableOpacity style={styles.button} onPress={() => {
+        navigation.navigate('DeleteRecipe', {
+          userId: item.id
+        })
+        setClickDelete(true)
+      }}>
         <Text style={styles.textButton}>
             Deletar
         </Text>

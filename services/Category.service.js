@@ -1,4 +1,4 @@
-const url = 'http://10.3.116.184:3000'
+const url = 'http://10.3.116.212:3000'
 
 export async function getCategories() {
     
@@ -34,5 +34,20 @@ export async function createCategory(category){
     }
     catch(e){
 
+    }
+}
+
+export async function deleteCategory(id) {
+    const request = `${url}/categorias`
+
+    try{
+        const response = await fetch(`${request}/${id}`, {
+            method: 'DELETE'
+        })
+        const data = await response.json()
+        return data
+    }
+    catch(e){
+        
     }
 }

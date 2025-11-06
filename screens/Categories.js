@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { getCategories } from '../services/Category.service'
 import AddCategory from '../components/AddCategory'
 
-export default function Categories() {
+export default function Categories({ navigation }) {
 
     const [view, setView] = useState('list')
     const [categories, setCategories] = useState([])
@@ -38,10 +38,14 @@ export default function Categories() {
         </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
-        <Text style={styles.textButton}>
-            Deletar
-        </Text>
+      <TouchableOpacity style={styles.button} onPress={() => {
+              navigation.navigate('DeleteCategory', {
+                categoryId: item.id
+              })
+            }}>
+              <Text style={styles.textButton}>
+                  Deletar
+              </Text>
       </TouchableOpacity>
         </View>
       )

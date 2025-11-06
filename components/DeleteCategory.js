@@ -1,42 +1,42 @@
 import { useState } from 'react'
 import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
-import { deleteRecipe } from '../services/Recipes.service';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { deleteCategory } from '../services/Category.service';
 
 
-export default function DeleteRecipe({route, navigation}) {
+export default function DeleteCategory({route, navigation}) {
 
-    const { userId } = route.params
-    const [receitaDeletada, setReceitaDeletada] = useState(false)
+    const { categoryId } = route.params
+    const [categoriaDeletada, setCategoriaDeletada] = useState(false)
 
     const deletar = async (id) => {
 
         try{
-            const resposta = await deleteRecipe(id)
+            const resposta = await deleteCategory(id)
             console.log(resposta)
-            setReceitaDeletada(true)
+            setCategoriaDeletada(true)
         }
         catch(e){
             console.log(e)
         }
     }
 
-    const getToRecipes = () => {
-        navigation.navigate('Recipes')
+    const getToCategories = () => {
+        navigation.navigate('Categories')
     }
 
 
     return (
 
         <SafeAreaView>
-        <View style={[!receitaDeletada ? style.container : style.none]}>
+        <View style={[!categoriaDeletada ? style.container : style.none]}>
             <Text style={style.title}>
-                Você tem certeza de que deseja deletar essa receita? {userId}
+                Você tem certeza de que deseja deletar essa categoria? {categoryId}
             </Text>
 
             <TouchableOpacity 
                 style={style.button}
-                onPress={() => deletar(userId)}
+                onPress={() => deletar(categoryId)}
                 >
 
                 <Text style={style.textButton}>
@@ -45,18 +45,18 @@ export default function DeleteRecipe({route, navigation}) {
             </TouchableOpacity>
         </View>
 
-        <View style={[receitaDeletada ? style.container : style.none]}>
+        <View style={[categoriaDeletada? style.container : style.none]}>
             <Text style={style.title}>
-                Receita deletada
+                Categoria deletada
             </Text>
 
             <TouchableOpacity 
                 style={style.button}
-                onPress={() => getToRecipes()}
+                onPress={() => getToCategories()}
                 >
 
                 <Text style={style.textButton}>
-                    Voltar para Receitas
+                    Voltar para Categorias
                 </Text>
             </TouchableOpacity>
         </View>
