@@ -5,6 +5,9 @@ import Recipes from './screens/Recipes';
 import Categories from './screens/Categories';
 import DeleteRecipe from './components/DeleteRecipe';
 import DeleteCategory from './components/DeleteCategory';
+import { updateCategory } from './services/Category.service';
+import UpdateCategory from './components/UpdateCategory';
+import UpdateRecipe from './components/UpdateRecipe';
 
 const Stack = createNativeStackNavigator()
 
@@ -20,6 +23,8 @@ export default function App() {
         <Stack.Screen name='Categories' component={Categories} options={{title: 'Categorias'}}/>
         <Stack.Screen name='DeleteRecipe' component={DeleteRecipe} options={{title: 'Deletar Receita'}}/>
         <Stack.Screen name='DeleteCategory' component={DeleteCategory} options={{title: 'Deletar Categoria'}}/>
+        <Stack.Screen name='UpdateCategory' component={UpdateCategory} options={{title: 'Atualizar Categoria'}}/>
+        <Stack.Screen name='UpdateRecipe' component={UpdateRecipe} options={{title: 'Atualizar Receita'}}/>
     
         
       </Stack.Navigator>

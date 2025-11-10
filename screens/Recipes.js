@@ -49,7 +49,9 @@ export default function Recipes({ navigation }) {
             {item.modo_preparo}
           </Text>
 
-          <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.replace('UpdateRecipe', {
+            recipeId: item.id
+          })}>
         <Text style={styles.textButton}>
             Editar
         </Text>

@@ -32,7 +32,10 @@ export default function Categories({ navigation }) {
             {item.nome}
           </Text>
 
-          <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.replace('UpdateCategory', {
+            categoryId: item.id,
+            categoryName: item.nome
+          })}>
         <Text style={styles.textButton}>
             Editar
         </Text>
@@ -71,8 +74,8 @@ export default function Categories({ navigation }) {
       ): (
         <View>
         <TouchableOpacity style={styles.button} onPress={() => setView('list')}>
-        <Text style={styles.textButton}>
             Ver categorias
+          <Text style={styles.textButton}>
         </Text>
         </TouchableOpacity>
 
