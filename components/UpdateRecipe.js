@@ -1,36 +1,26 @@
 import { useEffect, useState } from 'react'
 import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
 import { TextInput, Picker } from "react-native-web";
-import { getCategories, updateCategory } from '../services/Category.service';
-import { getUsers } from '../services/Users.service';
-import { getRecipes } from '../services/Recipes.service';
+import { getCategories } from '../services/Category.service';
+import { getUsers } from '../services/Users.service';import { updateRecipe } from '../services/Recipes.service';
+;
 
 
 export default function UpdateRecipe({ navigation, route}) {
-
-    const { recipeId } = route.params
-    const [recipes, setRecipes] = useState([])
-    const [nome, setNome] = useState('')
-    const [ingredientes, setIngredientes] = useState('')
-    const [modoPreparo, setModoPreparo] = useState('')
-    const [porcoes, setPorcoes] = useState('')
-    const [tempoPreparoMinutos, setTempoPreparoMinutos] = useState('')
+    
+    
+    const { recipeId, recipeName, recipeIngredients, recipePrepareMode, recipeCategory, recipePortions, recipePrepareTime, recipeUserId} = route.params
+    const [nome, setNome] = useState(recipeName)
+    const [ingredientes, setIngredientes] = useState(recipeIngredients)
+    const [modoPreparo, setModoPreparo] = useState(recipePrepareMode)
+    const [porcoes, setPorcoes] = useState(recipePortions)
+    const [tempoPreparoMinutos, setTempoPreparoMinutos] = useState(recipePrepareTime)
     const [categorias, setCategorias] = useState([])
     const [users, setUsers] = useState([])
-    const [userId, setUserId] = useState('')
-    const [categoryId, setCategoryId] = useState('')
-
-
-    const loadRecipes = async () => {
-          const data = await getRecipes()
-          setRecipes(data)
-        }
+    const [userId, setUserId] = useState(recipeUserId)
+    const [categoryId, setCategoryId] = useState(recipeCategory)
     
-    useEffect(() => {
-    
-        loadRecipes()
-          
-    }, [clickDelete])
+
 
 
     const loadUsers = async () => {
@@ -55,15 +45,21 @@ export default function UpdateRecipe({ navigation, route}) {
 
     async function save() {
         const obj = {
-            nome: nome
+            nome: nome, 
+            ingredientes: ingredientes, 
+            modo_preparo: modoPreparo,
+            porcoes: parseInt(porcoes),
+            tempo_preparo_minutos: parseInt(tempoPreparoMinutos),
+            usuario_id: parseInt(userId),
+            categoria: parseInt(categoryId)
         }
         console.log(JSON.stringify(obj));
 
         try{
             clearForm()
-            const response = await updateCategory(categoryId, obj)
+            const response = await updateRecipe(userId, obj)
             console.log(response)
-            navigation.navigate('Categories')
+            navigation.navigate('Recipes')
         }
         catch(e){
 
@@ -74,7 +70,7 @@ export default function UpdateRecipe({ navigation, route}) {
     return (
         <View style={style.container}>
             <Text style={style.title}>
-                Atualizar categoria
+                Editar receita
             </Text>
 
             <TextInput
@@ -82,6 +78,48 @@ export default function UpdateRecipe({ navigation, route}) {
                 onChangeText={(text) => setNome(text)}
                 placeholder="Digite o nome.."
             />
+            <TextInput
+                value={ingredientes}
+                onChangeText={(text) => setIngredientes(text)}
+                placeholder="Digite os ingrediêntes.."
+            />
+            <TextInput
+                value={modoPreparo}
+                onChangeText={(text) => setModoPreparo(text)}
+                placeholder="Digite o modo de preparo.."
+            />
+            <TextInput
+                value={porcoes}
+                onChangeText={(text) => setPorcoes(text)}
+                placeholder="Digite a quantidade de porções.."
+            />
+            <TextInput
+                value={tempoPreparoMinutos}
+                onChangeText={(text) => setTempoPreparoMinutos(text)}
+                placeholder="Digite o tempo de preparo em minutos.."
+            />
+
+            <Picker selectedValue={userId} onValueChange={(item) => setUserId(item)}>
+
+                <Picker.Item label={'Selecione uma opção'} value={''} enabled={false}></Picker.Item>
+                
+                {users.map((user) => (
+                    <Picker.Item key={user.id} label={user.nome} value={user.id.toString()}>
+
+                    </Picker.Item>
+                ))}
+                
+            </Picker>
+
+            <Picker selectedValue={categoryId} onValueChange={(item) => setCategoryId(item)}>
+
+                <Picker.Item label={'Selecione uma categoria'} value={''} enabled={false}></Picker.Item>
+
+                {categorias.map((category) => (
+                    <Picker.Item key={category.id} label={category.nome} value={category.id.toString()}></Picker.Item>
+                ))}
+
+            </Picker>
 
             <TouchableOpacity 
                 style={style.button}

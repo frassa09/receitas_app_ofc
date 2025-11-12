@@ -50,7 +50,14 @@ export default function Recipes({ navigation }) {
           </Text>
 
           <TouchableOpacity style={styles.button} onPress={() => navigation.replace('UpdateRecipe', {
-            recipeId: item.id
+            recipeId: item.id,
+            recipeName: item.nome,
+            recipePrepareMode: item.modo_preparo,
+            recipeIngredients: item.ingredientes,
+            recipeUserId: item.usuario_id,
+            recipeCategory: item.categoria,
+            recipePortions: item.porcoes,
+            recipePrepareTime: item.tempo_preparo_minutos
           })}>
         <Text style={styles.textButton}>
             Editar

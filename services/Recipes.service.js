@@ -1,4 +1,4 @@
-const url = 'http://10.3.116.108:3000'
+const url = 'http://10.3.116.94:3000'
 
 export async function getRecipes() {
     
@@ -59,7 +59,11 @@ export async function updateRecipe(id, obj) {
 
     try{
         const response = await fetch(`${request}/${id}`, {
-            method: 'UPDATE'
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(obj)
         })
         const data = await response.json()
         return data

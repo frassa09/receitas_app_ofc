@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, ScrollView, Modal } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { getCategories } from '../services/Category.service'
 import AddCategory from '../components/AddCategory'
@@ -7,6 +7,7 @@ export default function Categories({ navigation }) {
 
     const [view, setView] = useState('list')
     const [categories, setCategories] = useState([])
+    const [isActive, setIsActive] = useState(false)
 
     const loadCategories = async () => {
       const data = await getCategories()
@@ -60,6 +61,15 @@ export default function Categories({ navigation }) {
       <Text style={styles.title}>
         Bem vindo!
       </Text>
+
+      <Modal visible={isActive} animationType='none' onDismiss={() => setIsActive(false)}>
+
+        <View>
+          <Text>
+            Olá
+          </Text>
+        </View>
+      </Modal>
 
       {(view === 'list') ? (
         <View>
@@ -119,5 +129,38 @@ const styles = StyleSheet.create({
     cardItem: {
       color: '#fff',
       marginBottom: 10
+    },
+    modalContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#000'
+    },
+    modalView: {
+      margin: 20,
+      backgroundColor: '#fff',
+      borderRadius: 20,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 35,
+      width: '90%'
+    },
+    modalText: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 20,
+      color: '#FF0000',
+      textAlign: 'center'
+    },
+    closeButton: {
+      backgroundColor: '#000',
+      padding: 15,
+      borderRadius: 10
+    },
+    modalButtons: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      width: '100%'
     }
+    
 })

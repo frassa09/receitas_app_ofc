@@ -1,4 +1,4 @@
-const url = 'http://10.3.116.108:3000'
+const url = 'http://10.3.116.94:3000'
 
 export async function getCategories() {
     
