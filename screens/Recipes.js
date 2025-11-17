@@ -55,7 +55,7 @@ export default function Recipes({ navigation }) {
             recipePrepareMode: item.modo_preparo,
             recipeIngredients: item.ingredientes,
             recipeUserId: item.usuario_id,
-            recipeCategory: item.categoria,
+            recipeCategory: item.categoria_id,
             recipePortions: item.porcoes,
             recipePrepareTime: item.tempo_preparo_minutos
           })}>

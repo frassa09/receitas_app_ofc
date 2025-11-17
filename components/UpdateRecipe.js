@@ -51,7 +51,7 @@ export default function UpdateRecipe({ navigation, route}) {
             porcoes: parseInt(porcoes),
             tempo_preparo_minutos: parseInt(tempoPreparoMinutos),
             usuario_id: parseInt(userId),
-            categoria: parseInt(categoryId)
+            categoria_id: parseInt(categoryId)
         }
         console.log(JSON.stringify(obj));
 
